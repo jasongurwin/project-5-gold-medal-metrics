@@ -148,14 +148,19 @@ optionally ordered by the given field in the specified direction.
 
 const orderedMedals = (country, field, sortAscending) => {
 
-  if (sortAscending){
-    ascdesc = 'ASC'
-  } else {
-    ascdesc = 'DESC'
-  }
+  let ascdesc =''
+
+  if (field){
+    if (sortAscending) {
+      ascdesc = `ORDER BY ${field} ASC`
+    }
+    else {
+      ascdesc = `ORDER BY ${field} DESC`
+      }
+  };
 
   let sqlcommand =
-  `SELECT * from GoldMedal WHERE country = '${country}' order by ${field} ${ascdesc}`
+  `SELECT * from GoldMedal WHERE country = '${country}' ${ascdesc}`
   return sqlcommand;
 };
 
@@ -167,14 +172,19 @@ aliased as 'percent'. Optionally ordered by the given field in the specified dir
 */
 
 const orderedSports = (country, field, sortAscending) => {
-  if (sortAscending){
-    ascdesc = 'ASC'
-  } else {
-    ascdesc = 'DESC'
-  }
+  let ascdesc = ''
+
+  if (field){
+    if (sortAscending) {
+      ascdesc = `ORDER BY ${field} ASC`
+    }
+    else {
+      ascdesc = `ORDER BY ${field} DESC`
+      }
+  };
 
   let sqlcommand =
-  `SELECT sport, count(sport) as 'count', (count(sport) * 100/(select count(*) from GoldMedal where country='${country}')) as 'percent' from GoldMedal WHERE country = '${country}' group by sport order by ${field} ${ascdesc}`
+  `SELECT sport, count(sport) as 'count', (count(sport) * 100/(select count(*) from GoldMedal where country='${country}')) as 'percent' from GoldMedal WHERE country = '${country}' group by sport ${ascdesc}`
   return sqlcommand;
 };
 
